@@ -5,9 +5,9 @@ public class Product {
     private String album;
     private String description;
     private String image;
-    private String price;
+    private Double price;
 
-    public Product(int id, String album, String description, String image, String price){
+    public Product(int id, String album, String description, String image, Double price){
         this.id = id;
         this.album = album;
         this.description = description;
@@ -31,15 +31,15 @@ public class Product {
         return album;
     }
 
-    public void setAlbum(String name) {
+    public void setAlbum(String album) {
         this.album = album;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) { this.price = price; }
+    public void setPrice(Double price) { this.price = price; }
 
     public String getImage() {
         return image;

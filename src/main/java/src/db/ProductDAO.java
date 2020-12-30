@@ -1,5 +1,7 @@
 package src.db;
 
+import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import src.models.Product;
 import src.db.mappers.ProductMapper;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
@@ -20,4 +22,11 @@ public interface ProductDAO {
 
     @SqlQuery("SELECT * FROM product")
     List<Product> getAllProducts();
+
+    @SqlUpdate("INSERT INTO product(album, description, image, price) VALUES (:album, :description, :image, :price);")
+    @GetGeneratedKeys("id")
+    int addProduct(@Bind("album") String album,
+                   @Bind("description") String description,
+                   @Bind("image") String image,
+                   @Bind("price") double price);
 }

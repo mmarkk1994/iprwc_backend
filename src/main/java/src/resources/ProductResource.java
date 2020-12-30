@@ -4,6 +4,7 @@ import src.models.User;
 import src.service.ProductService;
 import io.dropwizard.auth.Auth;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -22,5 +23,14 @@ public class ProductResource {
     @GET
     public Response getAllProducts(@Auth Optional<User> optionalUser){
         return productService.getAllProducts(optionalUser);
+    }
+
+    @Path("/add")
+    @POST
+    public Response addProduct(@Auth User authUser, @FormParam("album") @NotNull String album,
+                               @FormParam("description") @NotNull String description,
+                               @FormParam("image") @NotNull String image,
+                               @FormParam("price") @NotNull double price){
+        return productService.addProduct(authUser, album, description, image, price);
     }
 }

@@ -16,7 +16,7 @@ public class ProductMapper implements RowMapper<Product> {
                 rs.getString("album"),
                 rs.getString("description"),
                 rs.getString("image"),
-                rs.getString("price")
+                rs.getDouble("price")
         );
     }
 }
