@@ -35,4 +35,10 @@ public interface ProductDAO {
 
     @SqlUpdate("DELETE FROM product WHERE id = :id")
     boolean deleteProduct(@Bind("id") int id);
+
+    @SqlUpdate("UPDATE product SET album = :album, description = :description," +
+            "price = :price WHERE id = :id")
+    boolean editProduct(@Bind("album") String album, @Bind("description") String description,
+                          @Bind("price") double price,
+                          @Bind("id") int id);
 }

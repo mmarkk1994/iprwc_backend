@@ -25,6 +25,12 @@ public class ProductResource {
         return productService.getAllProducts(optionalUser);
     }
 
+    @Path("/{id}")
+    @GET
+    public Response getProduct(@PathParam("id") int id, @Auth Optional<User> optionalUser){
+        return productService.getProduct(id, optionalUser);
+    }
+
     @Path("/add")
     @POST
     public Response addProduct(@Auth User authUser, @FormParam("album") @NotNull String album,
@@ -38,5 +44,14 @@ public class ProductResource {
     @DELETE
     public Response deleteProduct(@Auth User authUser, @PathParam("id") int id){
         return productService.deleteProduct(authUser, id);
+    }
+
+    @Path("/edit/{id}")
+    @PUT
+    public Response editProduct(@Auth User authUser, @PathParam("id") int id,
+                                  @FormParam("album") @NotNull String album,
+                                  @FormParam("description") @NotNull String description,
+                                  @FormParam("price") @NotNull double price){
+        return productService.editProduct(authUser, id, album, description, price);
     }
 }
