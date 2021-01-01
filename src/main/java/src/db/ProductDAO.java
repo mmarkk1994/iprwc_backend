@@ -23,10 +23,16 @@ public interface ProductDAO {
     @SqlQuery("SELECT * FROM product")
     List<Product> getAllProducts();
 
+    @SqlQuery("SELECT * FROM product WHERE id = :id")
+    Product getProduct(@Bind("id") int id);
+
     @SqlUpdate("INSERT INTO product(album, description, image, price) VALUES (:album, :description, :image, :price);")
     @GetGeneratedKeys("id")
     int addProduct(@Bind("album") String album,
                    @Bind("description") String description,
                    @Bind("image") String image,
                    @Bind("price") double price);
+
+    @SqlUpdate("DELETE FROM product WHERE id = :id")
+    boolean deleteProduct(@Bind("id") int id);
 }

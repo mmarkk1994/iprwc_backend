@@ -33,4 +33,10 @@ public class ProductResource {
                                @FormParam("price") @NotNull double price){
         return productService.addProduct(authUser, album, description, image, price);
     }
+
+    @Path("/delete/{id}")
+    @DELETE
+    public Response deleteProduct(@Auth User authUser, @PathParam("id") int id){
+        return productService.deleteProduct(authUser, id);
+    }
 }

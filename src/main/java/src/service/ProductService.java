@@ -52,4 +52,26 @@ public class ProductService {
         }
 
     }
+
+    public Response deleteProduct(User authUser, int id) {
+        Body body = new Body();
+        if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.DELETE_PRODUCT)){
+            Body.createResponse(body, BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
+        }
+
+        JwtHelper.renewAuthToken(body, authUser);
+
+        Product product = productDAO.getProduct(id);
+        if(product == null){
+            Body.createResponse(body, NOT_FOUND, MessageUtil.PRODUCT_NOT_FOUND, null);
+        }
+
+        try {
+            boolean deleted = productDAO.deleteProduct(id);
+            return deleted ? Body.createResponse(body, OK, MessageUtil.PRODUCT_DELETED, null)
+                    : Body.createResponse(body, BAD_REQUEST, MessageUtil.PRODUCT_OPERATION_FAILED, null);
+        } catch (UnableToExecuteStatementException e){
+            return Body.createResponse(body, BAD_REQUEST, MessageUtil.PRODUCT_NOT_FOUND, null);
+        }
+    }
 }
