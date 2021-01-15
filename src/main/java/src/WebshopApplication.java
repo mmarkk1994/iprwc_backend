@@ -17,9 +17,9 @@ import org.jose4j.keys.HmacKey;
 import src.models.User;
 import src.core.JwtAuthenticator;
 import src.core.JwtHelper;
+import src.resources.OrderResource;
 import src.resources.ProductResource;
 import src.resources.UserResource;
-
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import java.util.EnumSet;
@@ -54,6 +54,7 @@ public class WebshopApplication extends Application<WebshopConfiguration> {
         // register resources
         environment.jersey().register(new UserResource());
         environment.jersey().register(new ProductResource());
+        environment.jersey().register(new OrderResource());
 
         configureCors(environment);
     }
