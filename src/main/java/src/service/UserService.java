@@ -12,6 +12,9 @@ import src.util.PrivilegeUtil;
 
 import javax.ws.rs.core.Response;
 
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.OK;
+
 public class UserService {
     private final UserDAO userDAO;
     private final int COST = 12;
@@ -41,7 +44,7 @@ public class UserService {
         return body.build();
     }
 
-    public Response register(String username, String email, String password){
+    public Response register(String username, String email, String password, String streetAddress, String postalCode, String province){
         Body body = new Body();
         if(!checkIfEmailIsValid(email)){
             return Body.createResponse(body, Response.Status.BAD_REQUEST, MessageUtil.EMAIL_NOT_VALID, null);
@@ -53,17 +56,32 @@ public class UserService {
 
         String hashedPass = BCrypt.withDefaults().hashToString(COST, password.toCharArray());
 
-        return createUser(username, email, hashedPass, body);
+        return createUser(username, email, hashedPass, streetAddress, postalCode, province, body);
     }
 
-    private Response createUser(String username, String email, String hashedPass, Body body) {
+    private Response createUser(String username, String email, String hashedPass,
+                                String streetAddress, String postalCode, String province, Body body) {
         try {
-            int id = userDAO.createUser(username, email, hashedPass);
+            int id = userDAO.createUser(username, email, hashedPass, streetAddress, postalCode, province);
             User user = userDAO.getUserFromId(id);
             return Body.createResponse(body, Response.Status.OK, MessageUtil.ACCOUNT_CREATED, user);
         } catch (UnableToExecuteStatementException e) {
             return Body.createResponse(body, Response.Status.BAD_REQUEST, MessageUtil.EMAIL_ALREADY_EXISTS, null);
         }
+    }
+
+    public Response editProfile(User authUser, int id, String email, String streetAddress, String postalCode, String province){
+        Body body = new Body();
+        if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.UPDATE_PROFILE)){
+            return Body.createResponse(body, BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
+        }
+
+        JwtHelper.renewAuthToken(body, authUser);
+
+        boolean updated = userDAO.editProfile(id, email, streetAddress, postalCode, province);
+        return updated ? Body.createResponse(body, OK, MessageUtil.PROFILE_UPDATED, null)
+                : Body.createResponse(body, BAD_REQUEST, MessageUtil.PROFILE_UPDATE_FAILED, null);
+
     }
 
     private boolean checkIfEmailIsValid(String email){
@@ -94,35 +112,6 @@ public class UserService {
         body.setStatus(Response.Status.OK);
         body.setContent(user);
         return body.build();
-    }
-
-    public Response changeUserPassword(User authUser, int id, String password, String oldPassword) {
-        Body body = new Body();
-        if(checkUserId(authUser, id)){
-            return Body.createResponse(body, Response.Status.NOT_FOUND, MessageUtil.USER_NOT_FOUND, null);
-        }
-
-        if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.CHANGE_PASSWORD)){
-            return Body.createResponse(body, Response.Status.BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
-        }
-
-        if(!checkUserOldPassword(authUser, oldPassword)){
-            return Body.createResponse(body, Response.Status.BAD_REQUEST, MessageUtil.PASSWORD_DO_NOT_MATCH, null);
-        }
-
-        JwtHelper.renewAuthToken(body, authUser);
-
-        String hashedPass = BCrypt.withDefaults().hashToString(COST, password.toCharArray());
-        userDAO.updateUserPassword(hashedPass, id);
-
-        return Body.createResponse(body, Response.Status.OK, MessageUtil.PASSWORD_UPDATED, null);
-    }
-
-    private boolean checkUserOldPassword(User authUser, String oldPassword){
-        String password = userDAO.getPasswordFromUsername(authUser.getEmail());
-
-        BCrypt.Result result = BCrypt.verifyer().verify(oldPassword.toCharArray(), password);
-        return result.validFormat && result.verified;
     }
 
     private boolean checkUserId(User authUser, int id){

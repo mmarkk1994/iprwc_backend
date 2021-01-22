@@ -29,8 +29,10 @@ public class UserResource {
 
     @Path("/register")
     @POST
-    public Response register(@FormParam("username") @NotNull String username, @FormParam("email") @NotNull String email, @FormParam("password") @NotNull String password){
-        return userService.register(username, email, password);
+    public Response register(@FormParam("username") @NotNull String username, @FormParam("email") @NotNull String email,
+                             @FormParam("password") @NotNull String password, @FormParam("streetAddress") @NotNull String streetAddress,
+                             @FormParam("postalCode") @NotNull String postalCode, @FormParam("province") @NotNull String province){
+        return userService.register(username, email, password, streetAddress, postalCode, province);
     }
 
     @Path("/profile/{id}")
@@ -39,10 +41,11 @@ public class UserResource {
         return userService.getUser(authUser, id);
     }
 
-    @Path("/changePassword/{id}")
+    @Path("/profile/{id}/edit")
     @PUT
-    public Response changeUserPassword(@Auth User authUser, @PathParam("id") int id, @FormParam("oldPassword") @NotNull String oldPassword,
-                                       @FormParam("password") @NotNull String password){
-        return userService.changeUserPassword(authUser, id, password, oldPassword);
+    public Response editProfile(@Auth User authUser, @PathParam("id") int id, @FormParam("email") String email,
+                                @FormParam("streetAddress") String streetAddress, @FormParam("postalCode") String postalCode,
+                                @FormParam("province") String province){
+        return userService.editProfile(authUser, id, email, streetAddress, postalCode, province);
     }
 }

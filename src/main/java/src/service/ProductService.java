@@ -50,7 +50,6 @@ public class ProductService {
             e.printStackTrace();
             return Body.createResponse(body, BAD_REQUEST, MessageUtil.PRODUCT_ALREADY_EXIST, null);
         }
-
     }
 
     public Response editProduct(User authUser, int id, String album, String description, double price){
