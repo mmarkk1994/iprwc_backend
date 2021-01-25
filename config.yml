@@ -10,13 +10,14 @@ database:
   driverClass: org.postgresql.Driver
 
   # the username
-  user: postgres
+  user: yyicsjnqwidpfj
 
   # the password
-  password: 6547251
+  password: bf111da0f8e002be57b07d34240030fe9d4262652e338c7a3ce1e0ef89e4326a
 
   # the JDBC URL
-  url: jdbc:postgresql://localhost:5433/iprwc_webshop
+  url: jdbc:postgresql://ec2-54-76-215-139.eu-west-1.compute.amazonaws.com:5432/d5ufh6tm197pgn?password=bf111da0f8e002be57b07d34240030fe9d4262652e338c7a3ce1e0ef89e4326a&sslmode=require&user=yyicsjnqwidpfj
+    #  jdbc:postgresql://localhost:5433/iprwc_webshop
 
   # any properties specific to your JDBC driver:
   properties:
