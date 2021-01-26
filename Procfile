@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Ddw.server.applicationConnectors[0].port=$PORT -cp target/classes:target/* src.WebshopApplication
+web: java $JAVA_OPTS -Ddw.server.connector.port=$PORT -cp target/classes:target/* src.WebshopApplication
