@@ -29,6 +29,7 @@ public class WebshopApplication extends Application<WebshopConfiguration> {
     public static Jdbi jdbiCon;
 
     public static void main(final String[] args) throws Exception {
+        
         new WebshopApplication().run("server", "config.yml");
     }
 
