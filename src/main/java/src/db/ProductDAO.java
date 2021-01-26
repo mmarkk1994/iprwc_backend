@@ -16,7 +16,7 @@ public interface ProductDAO {
             "id SERIAL PRIMARY KEY,"+
             "album VARCHAR(256) UNIQUE NOT NULL,"+
             "description VARCHAR(256) NOT NULL,"+
-            "image TEXT NOT NULL,"+
+            "image VARCHAR(256) NOT NULL,"+
             "price NUMERIC(11,2) NOT NULL);")
     void createTable();
 
