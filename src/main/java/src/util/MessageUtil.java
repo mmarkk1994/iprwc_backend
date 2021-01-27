@@ -1,32 +1,32 @@
 package src.util;
 
 public class MessageUtil {
-    // USER MESSAGES
-    public static final String EMAIL_PASS_INVALID_COMBI = "Onjuist Email/Wachtwoord.";
-    public static final String EMAIL_NOT_VALID = "Email adres is niet geldig!";
-    public static final String PASSWORD_LENGHT_TO_SHORT = "Wachtwoord mag niet kleiner zijn als 6 tekens.";
-    public static final String ACCOUNT_CREATED = "Account is aangemaakt.";
-    public static final String EMAIL_ALREADY_EXISTS = "Er bestaat al een account met dit email adres.";
-    public static final String LOGIN_OK = "Gebruiker successvol ingelogd.";
-    public static final String USER_NOT_FOUND = "Gerbuiker is niet gevonden";
-    public static final String USER_NOT_ENOUGH_PRIVILEGE = "Gebruiker heeft niet genoeg rechten";
-    public static final String PROFILE_UPDATED = "Gebruiker informatie is bijgewerkt";
-    public static final String PROFILE_UPDATE_FAILED = "Gebruiker informatie is niet bijgewerkt";
 
     // PRODUCT MESSAGES
-    public static final String PRODUCT_NOT_FOUND = "Het door jou opgevraagde product is niet gevonden";
-    public static final String PRODUCT_FOUND = "Opgevraagde product gevonden";
-    public static final String PRODUCT_DELETED = "Verwijderen van het product is gelukt!";
-    public static final String PRODUCT_UPDATED = "Bijwerken van product is gelukt";
-    public static final String PRODUCT_OPERATION_FAILED = "Bijwerken, aanmaken of verwijderen van product is niet gelukt";
-    public static final String PRODUCT_CREATED = "Product is aangemaakt";
-    public static final String PRODUCT_ALREADY_EXIST = "Het product wat u wilt toevoegen bestaat al";
+    public static final String PRODUCT_NOT_FOUND = "Product could not be found";
+    public static final String PRODUCT_OPERATION_FAILED = "Product operation failed";
+    public static final String PRODUCT_CREATED = "Product created";
+    public static final String PRODUCT_ALREADY_EXIST = "Product already exists";
+    public static final String PRODUCT_FOUND = "Product found";
+    public static final String PRODUCT_DELETED = "Product deleted";
+    public static final String PRODUCT_UPDATED = "Product has been updated";
+
+    // USER MESSAGES
+    public static final String EMAIL_PASS_INVALID_COMBI = "Invalid Email/Password";
+    public static final String EMAIL_NOT_VALID = "Email is not valid";
+    public static final String ACCOUNT_CREATED = "Account created";
+    public static final String USER_NOT_ENOUGH_PRIVILEGE = "User doesn't have enough privileges";
+    public static final String PROFILE_UPDATED = "Profile updated";
+    public static final String PROFILE_UPDATE_FAILED = "Profile update failed";
+    public static final String EMAIL_ALREADY_EXISTS = "This email address is already taken";
+    public static final String LOGIN_OK = "User successfully logged in";
+    public static final String USER_NOT_FOUND = "User not found";
 
     // ORDER MESSAGES
-    public static final String ORDERS_FOUND = "Bestellingen opgehaald";
-    public static final String ORDER_CREATED = "Bestelling geplaats!";
-    public static final String ORDER_CREATED_FAILED = "Plaatsen van de bestelling is niet gelukt";
+    public static final String ORDER_CREATED_FAILED = "Order failed";
+    public static final String ORDERS_FOUND = "Orders loaded";
+    public static final String ORDER_CREATED = "Order created";
 
     // GLOBAL
-    public static final String SOMETHING_WENT_WRONG = "Er is iets fout gegaan, probeer het later opnieuw.";
+    public static final String SOMETHING_WENT_WRONG = "Something went wrong, try again later";
 }
