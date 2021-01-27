@@ -8,9 +8,7 @@ import org.jose4j.jwt.consumer.JwtContext;
 import src.WebshopApplication;
 import src.models.User;
 import src.db.UserDAO;
-
 import java.util.Optional;
-
 
 public class JwtAuthenticator implements Authenticator<JwtContext, User> {
     @Override

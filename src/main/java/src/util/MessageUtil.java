@@ -15,6 +15,7 @@ public class MessageUtil {
     public static final String EMAIL_PASS_INVALID_COMBI = "Invalid Email/Password";
     public static final String EMAIL_NOT_VALID = "Email is not valid";
     public static final String ACCOUNT_CREATED = "Account created";
+    public static final String PASSWORD_LENGHT_TO_SHORT = "Password is to short";
     public static final String USER_NOT_ENOUGH_PRIVILEGE = "User doesn't have enough privileges";
     public static final String PROFILE_UPDATED = "Profile updated";
     public static final String PROFILE_UPDATE_FAILED = "Profile update failed";

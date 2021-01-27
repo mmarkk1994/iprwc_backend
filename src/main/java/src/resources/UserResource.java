@@ -19,20 +19,20 @@ public class UserResource {
         userService = new UserService();
     }
 
-    @Path("/login")
-    @POST
-    public Response login(@FormParam("username") @NotNull String username,
-                          @FormParam("password") @NotNull String password){
-
-        return userService.login(username, password);
-    }
-
     @Path("/register")
     @POST
     public Response register(@FormParam("username") @NotNull String username, @FormParam("email") @NotNull String email,
                              @FormParam("password") @NotNull String password, @FormParam("streetAddress") @NotNull String streetAddress,
                              @FormParam("postalCode") @NotNull String postalCode, @FormParam("province") @NotNull String province){
         return userService.register(username, email, password, streetAddress, postalCode, province);
+    }
+
+    @Path("/login")
+    @POST
+    public Response login(@FormParam("username") @NotNull String username,
+                          @FormParam("password") @NotNull String password){
+
+        return userService.login(username, password);
     }
 
     @Path("/profile/{id}")
