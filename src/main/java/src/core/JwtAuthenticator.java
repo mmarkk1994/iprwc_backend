@@ -19,11 +19,12 @@ public class JwtAuthenticator implements Authenticator<JwtContext, User> {
                 return Optional.empty();
             }
 
-            UserDAO userDAO = WebshopApplication.jdbiCon.onDemand(UserDAO.class);
             Long userId = (Long)claims.getClaimValue("id");
+            UserDAO userDAO = WebshopApplication.jdbiCon.onDemand(UserDAO.class);
             User user = userDAO.getUserFromId(userId.intValue());
 
             return user == null ? Optional.empty() : Optional.of(user);
+
         } catch(MalformedClaimException e){
             return Optional.empty();
         }

@@ -28,15 +28,15 @@ public class OrderResource {
        return orderService.createOrder(authUser, orderItems);
     }
 
+    @Path("/{id}")
+    @GET
+    public Response getOrdersFromUser(@Auth User authUser, @PathParam("id") int id) {
+        return orderService.getOrdersFromUser(authUser, id);
+    }
+
     @Path("/all")
     @GET
     public Response getAllOrders(@Auth User authUser) {
         return orderService.getAllOrders(authUser);
-    }
-
-    @Path("/{id}")
-    @GET
-    public Response getUserOrders(@Auth User authUser, @PathParam("id") int id) {
-        return orderService.getUserOrders(authUser, id);
     }
 }

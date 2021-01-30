@@ -4,7 +4,7 @@ import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
 import src.WebshopApplication;
 import src.models.Product;
 import src.models.User;
-import src.core.Body;
+import src.core.HttpBody;
 import src.core.JwtHelper;
 import src.db.ProductDAO;
 import src.util.MessageUtil;
@@ -25,83 +25,83 @@ public class ProductService {
     }
 
     public Response getAllProducts(Optional<User> optionalUser){
-        Body body = new Body();
+        HttpBody httpBody = new HttpBody();
 
-        JwtHelper.renewAuthToken(body, optionalUser);
+        JwtHelper.renewToken(httpBody, optionalUser);
 
         List<Product> productList = productDAO.getAllProducts();
 
-        return Body.createResponse(body, OK, MessageUtil.PRODUCT_FOUND, productList);
+        return HttpBody.createResponse(httpBody, OK, MessageUtil.PRODUCT_FOUND, productList);
     }
 
     public Response addProduct(User authUser, String album, String description, String image, double price) {
-        Body body = new Body();
+        HttpBody httpBody = new HttpBody();
         if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.ADD_PRODUCT)){
-            return Body.createResponse(body, BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
+            return HttpBody.createResponse(httpBody, BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
         }
 
-        JwtHelper.renewAuthToken(body, authUser);
+        JwtHelper.renewToken(httpBody, authUser);
 
         try {
             int productId = productDAO.addProduct(album, description, image, price);
-            return (productId != -1) ? Body.createResponse(body, OK, MessageUtil.PRODUCT_CREATED, productId):
-                    Body.createResponse(body, BAD_REQUEST, MessageUtil.PRODUCT_OPERATION_FAILED, null);
+            return (productId != -1) ? HttpBody.createResponse(httpBody, OK, MessageUtil.PRODUCT_CREATED, productId):
+                    HttpBody.createResponse(httpBody, BAD_REQUEST, MessageUtil.PRODUCT_OPERATION_FAILED, null);
         } catch (UnableToExecuteStatementException e){
             e.printStackTrace();
-            return Body.createResponse(body, BAD_REQUEST, MessageUtil.PRODUCT_ALREADY_EXIST, null);
+            return HttpBody.createResponse(httpBody, BAD_REQUEST, MessageUtil.PRODUCT_ALREADY_EXIST, null);
         }
     }
 
     public Response editProduct(User authUser, int id, String album, String description, double price){
-        Body body = new Body();
+        HttpBody httpBody = new HttpBody();
         if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.UPDATE_PRODUCT)){
-            return Body.createResponse(body, BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
+            return HttpBody.createResponse(httpBody, BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
         }
 
-        JwtHelper.renewAuthToken(body, authUser);
+        JwtHelper.renewToken(httpBody, authUser);
 
         try {
             boolean updated = productDAO.editProduct(album, description, price, id);
-            return updated ? Body.createResponse(body, OK, MessageUtil.PRODUCT_UPDATED, null)
-                    : Body.createResponse(body, BAD_REQUEST, MessageUtil.PRODUCT_OPERATION_FAILED, null);
+            return updated ? HttpBody.createResponse(httpBody, OK, MessageUtil.PRODUCT_UPDATED, null)
+                    : HttpBody.createResponse(httpBody, BAD_REQUEST, MessageUtil.PRODUCT_OPERATION_FAILED, null);
         } catch (UnableToExecuteStatementException e){
-            return Body.createResponse(body, BAD_REQUEST, MessageUtil.PRODUCT_ALREADY_EXIST, null);
+            return HttpBody.createResponse(httpBody, BAD_REQUEST, MessageUtil.PRODUCT_ALREADY_EXIST, null);
         }
     }
 
     public Response deleteProduct(User authUser, int id) {
-        Body body = new Body();
+        HttpBody httpBody = new HttpBody();
         if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.DELETE_PRODUCT)){
-            Body.createResponse(body, BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
+            HttpBody.createResponse(httpBody, BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
         }
 
-        JwtHelper.renewAuthToken(body, authUser);
+        JwtHelper.renewToken(httpBody, authUser);
 
         Product product = productDAO.getProduct(id);
         if(product == null){
-            Body.createResponse(body, NOT_FOUND, MessageUtil.PRODUCT_NOT_FOUND, null);
+            HttpBody.createResponse(httpBody, NOT_FOUND, MessageUtil.PRODUCT_NOT_FOUND, null);
         }
 
         try {
             boolean deleted = productDAO.deleteProduct(id);
-            return deleted ? Body.createResponse(body, OK, MessageUtil.PRODUCT_DELETED, null)
-                    : Body.createResponse(body, BAD_REQUEST, MessageUtil.PRODUCT_OPERATION_FAILED, null);
+            return deleted ? HttpBody.createResponse(httpBody, OK, MessageUtil.PRODUCT_DELETED, null)
+                    : HttpBody.createResponse(httpBody, BAD_REQUEST, MessageUtil.PRODUCT_OPERATION_FAILED, null);
         } catch (UnableToExecuteStatementException e){
-            return Body.createResponse(body, BAD_REQUEST, MessageUtil.PRODUCT_NOT_FOUND, null);
+            return HttpBody.createResponse(httpBody, BAD_REQUEST, MessageUtil.PRODUCT_NOT_FOUND, null);
         }
     }
 
     public Response getProduct(int id, Optional<User> optionalUser){
-        Body body = new Body();
+        HttpBody httpBody = new HttpBody();
 
-        JwtHelper.renewAuthToken(body, optionalUser);
+        JwtHelper.renewToken(httpBody, optionalUser);
 
         Product product = productDAO.getProduct(id);
 
         if(product == null){
-            return Body.createResponse(body, Response.Status.NOT_FOUND, MessageUtil.PRODUCT_NOT_FOUND, null);
+            return HttpBody.createResponse(httpBody, Response.Status.NOT_FOUND, MessageUtil.PRODUCT_NOT_FOUND, null);
         }
 
-        return Body.createResponse(body, OK, MessageUtil.PRODUCT_FOUND, product);
+        return HttpBody.createResponse(httpBody, OK, MessageUtil.PRODUCT_FOUND, product);
     }
 }

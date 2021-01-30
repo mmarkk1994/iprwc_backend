@@ -4,12 +4,11 @@ import src.WebshopApplication;
 import src.models.Order;
 import src.models.User;
 import src.models.OrderItems;
-import src.core.Body;
+import src.core.HttpBody;
 import src.core.JwtHelper;
 import src.db.OrderDAO;
 import src.util.MessageUtil;
 import src.util.PrivilegeUtil;
-import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -24,57 +23,46 @@ public class OrderService {
     }
 
     public Response getAllOrders(User authUser) {
-        Body body = new Body();
+        HttpBody httpBody = new HttpBody();
 
-        JwtHelper.renewAuthToken(body, authUser);
+        JwtHelper.renewToken(httpBody, authUser);
 
         if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.SEE_ALL_ORDERS)) {
-            return Body.createResponse(body, Response.Status.BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
+            return HttpBody.createResponse(httpBody, Response.Status.BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
         }
 
-        try {
-            ArrayList<Order> orders = orderDAO.getOrders();
-            return Body.createResponse(body, Response.Status.OK, MessageUtil.ORDERS_FOUND, orders);
-        } catch (UnableToExecuteStatementException e) {
-            e.printStackTrace();
-            return Body.createResponse(body, Response.Status.BAD_REQUEST, MessageUtil.SOMETHING_WENT_WRONG, null);
-        }
-    }
-
-    public Response getUserOrders(User authUser, int id) {
-        Body body = new Body();
-
-        JwtHelper.renewAuthToken(body, authUser);
-
-        if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.SEE_USER_ORDERS)) {
-            return Body.createResponse(body, Response.Status.BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
-        }
-        try {
-            ArrayList<Order> orders = orderDAO.getUserOrders(id);
-            return Body.createResponse(body, Response.Status.OK, MessageUtil.ORDERS_FOUND, orders);
-        } catch (UnableToExecuteStatementException e) {
-            return Body.createResponse(body, Response.Status.BAD_REQUEST, MessageUtil.SOMETHING_WENT_WRONG, null);
-        }
+        ArrayList<Order> orders = orderDAO.getOrders();
+        return HttpBody.createResponse(httpBody, Response.Status.OK, MessageUtil.ORDERS_FOUND, orders);
     }
 
     public Response createOrder(User authUser, List<OrderItems> orderItems) {
-        Body body = new Body();
+        HttpBody httpBody = new HttpBody();
 
         if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.CAN_ORDER)) {
-            return Body.createResponse(body, Response.Status.BAD_REQUEST, MessageUtil.ORDER_CREATED_FAILED, null);
+            return HttpBody.createResponse(httpBody, Response.Status.BAD_REQUEST, MessageUtil.ORDER_CREATED_FAILED, null);
         }
 
-        JwtHelper.renewAuthToken(body, authUser);
+        JwtHelper.renewToken(httpBody, authUser);
 
         boolean created = false;
-        try {
-            for(OrderItems orderItem: orderItems) {
-                created = this.orderDAO.createOrder(orderItem.getProductId(), orderItem.getUserId());
-            }
-            return created ? Body.createResponse(body, Response.Status.OK, MessageUtil.ORDER_CREATED, null) :
-                    Body.createResponse(body, Response.Status.BAD_REQUEST, MessageUtil.ORDER_CREATED_FAILED, null);
-        } catch (UnableToExecuteStatementException e) {
-            return Body.createResponse(body, Response.Status.BAD_REQUEST, MessageUtil.SOMETHING_WENT_WRONG, null);
+
+        for(OrderItems orderItem: orderItems) {
+            created = this.orderDAO.createOrder(orderItem.getProductId(), orderItem.getUserId());
         }
+        return created ? HttpBody.createResponse(httpBody, Response.Status.OK, MessageUtil.ORDER_CREATED, null) :
+                HttpBody.createResponse(httpBody, Response.Status.BAD_REQUEST, MessageUtil.ORDER_CREATED_FAILED, null);
+    }
+
+    public Response getOrdersFromUser(User authUser, int id) {
+        HttpBody httpBody = new HttpBody();
+
+        JwtHelper.renewToken(httpBody, authUser);
+
+        if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.SEE_COSTUMER_ORDERS)) {
+            return HttpBody.createResponse(httpBody, Response.Status.BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
+        }
+
+        ArrayList<Order> orders = orderDAO.getOrdersFromUser(id);
+        return HttpBody.createResponse(httpBody, Response.Status.OK, MessageUtil.ORDERS_FOUND, orders);
     }
 }

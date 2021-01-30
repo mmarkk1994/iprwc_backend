@@ -31,5 +31,5 @@ public interface OrderDAO {
     @SqlQuery("SELECT o.id, u.username, p.album, o.order_date FROM users u " +
             "JOIN user_orders o ON u.id = o.user_id JOIN product p" +
             " ON o.product_id = p.id WHERE u.id = :id")
-    ArrayList<Order> getUserOrders(@Bind("id") int id);
+    ArrayList<Order> getOrdersFromUser(@Bind("id") int id);
 }

@@ -27,7 +27,4 @@ public class MessageUtil {
     public static final String ORDER_CREATED_FAILED = "Order failed";
     public static final String ORDERS_FOUND = "Orders loaded";
     public static final String ORDER_CREATED = "Order created";
-
-    // GLOBAL
-    public static final String SOMETHING_WENT_WRONG = "Something went wrong, try again later";
 }
