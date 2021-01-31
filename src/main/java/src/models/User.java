@@ -23,6 +23,38 @@ public class User implements Principal {
         this.privilege = privilege;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
     public User(){}
 
     @Override
