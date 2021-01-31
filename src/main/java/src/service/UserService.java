@@ -42,7 +42,7 @@ public class UserService {
         User user = userDAO.getUserFromUsername(username);
         httpBody.setContent(user);
         httpBody.setMessage(MessageUtil.LOGIN_OK);
-        user.setToken(JwtHelper.createToken(user.getId()));
+        user.setAuthToken(JwtHelper.createToken(user.getId()));
         return httpBody.build();
     }
 

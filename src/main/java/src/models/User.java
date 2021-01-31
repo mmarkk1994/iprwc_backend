@@ -38,7 +38,7 @@ public class User implements Principal {
         this.id = id;
     }
 
-    public void setToken(String authToken) {
+    public void setAuthToken(String authToken) {
         this.authToken = authToken;
     }
 
