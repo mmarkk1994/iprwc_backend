@@ -6,7 +6,7 @@ public class User implements Principal {
 
     private int id;
     private String username;
-    private String token;
+    private String authToken;
     private String email;
     private String streetAddress;
     private String postalCode;
@@ -38,8 +38,12 @@ public class User implements Principal {
         this.id = id;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setToken(String authToken) {
+        this.authToken = authToken;
+    }
+
+    public String getAuthToken() {
+        return authToken;
     }
 
     public int getPrivilege() { return privilege; }

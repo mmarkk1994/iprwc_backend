@@ -75,6 +75,7 @@ public class UserService {
 
     public Response editProfile(User authUser, int id, String email, String streetAddress, String postalCode, String province){
         HttpBody httpBody = new HttpBody();
+
         if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.UPDATE_PROFILE)){
             return HttpBody.createResponse(httpBody, BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
         }
