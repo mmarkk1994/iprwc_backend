@@ -29,7 +29,6 @@ public class WebshopApplication extends Application<WebshopConfiguration> {
     public static Jdbi jdbiCon;
 
     public static void main(final String[] args) throws Exception {
-
         new WebshopApplication().run("server", "config.yml");
     }
 
@@ -68,6 +67,7 @@ public class WebshopApplication extends Application<WebshopConfiguration> {
 
     private void registerJwtAuthentication(final WebshopConfiguration configuration, final Environment environment){
         final byte[] jwtSecret = configuration.getJwtSecret();
+
         final JwtConsumer consumer = new JwtConsumerBuilder()
                 .setAllowedClockSkewInSeconds(30)
                 .setRequireExpirationTime()
@@ -81,6 +81,7 @@ public class WebshopApplication extends Application<WebshopConfiguration> {
                 .setAuthenticator(new JwtAuthenticator())
                 .buildAuthFilter()
         ));
+        
         environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
     }
 

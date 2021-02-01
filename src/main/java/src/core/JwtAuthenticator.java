@@ -15,6 +15,7 @@ public class JwtAuthenticator implements Authenticator<JwtContext, User> {
     public Optional<User> authenticate(JwtContext jwtContext) {
         try {
             final JwtClaims claims = jwtContext.getJwtClaims();
+
             if(NumericDate.now().isAfter(claims.getExpirationTime())){
                 return Optional.empty();
             }

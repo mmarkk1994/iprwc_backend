@@ -10,9 +10,7 @@ import src.db.UserDAO;
 import src.util.MessageUtil;
 import src.util.PrivilegeUtil;
 import src.util.ValidationUtil;
-
 import javax.ws.rs.core.Response;
-
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.OK;
 
@@ -29,13 +27,13 @@ public class UserService {
         HttpBody httpBody = new HttpBody();
         String pass = userDAO.getPasswordFromUsername(username);
 
-        if(pass == null){
+        if(pass == null) {
             return HttpBody.createResponse(httpBody, Response.Status.BAD_REQUEST, MessageUtil.EMAIL_PASS_INVALID_COMBI, null);
         }
 
         BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), pass);
 
-        if(!result.validFormat || !result.verified){
+        if(!result.validFormat || !result.verified) {
             return HttpBody.createResponse(httpBody, Response.Status.BAD_REQUEST, MessageUtil.EMAIL_PASS_INVALID_COMBI, null);
         }
 
@@ -49,11 +47,11 @@ public class UserService {
     public Response register(String username, String email, String password, String streetAddress, String postalCode, String province){
         HttpBody httpBody = new HttpBody();
 
-        if(!ValidationUtil.checkIfEmailIsValid(email)){
+        if(!ValidationUtil.checkIfEmailIsValid(email)) {
             return HttpBody.createResponse(httpBody, Response.Status.BAD_REQUEST, MessageUtil.EMAIL_NOT_VALID, null);
         }
 
-        if(!ValidationUtil.checkLengthPassword(password)){
+        if(!ValidationUtil.checkLengthPassword(password)) {
             return HttpBody.createResponse(httpBody, Response.Status.BAD_REQUEST, MessageUtil.PASSWORD_LENGHT_TO_SHORT, null);
         }
 
@@ -76,7 +74,7 @@ public class UserService {
     public Response editProfile(User authUser, int id, String email, String streetAddress, String postalCode, String province){
         HttpBody httpBody = new HttpBody();
 
-        if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.UPDATE_PROFILE)){
+        if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.UPDATE_PROFILE)) {
             return HttpBody.createResponse(httpBody, BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
         }
 
@@ -88,14 +86,14 @@ public class UserService {
 
     }
 
-    public Response getUser(User authUser, int id){
+    public Response getUser(User authUser, int id) {
         HttpBody httpBody = new HttpBody();
 
-        if(checkUserId(authUser, id)){
+        if(checkUserId(authUser, id)) {
             return HttpBody.createResponse(httpBody, Response.Status.NOT_FOUND, MessageUtil.USER_NOT_FOUND, null);
         }
 
-        if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.CHECK_COSTUMER_PROFILE)){
+        if(!PrivilegeUtil.checkPrivilege(authUser, PrivilegeUtil.CHECK_COSTUMER_PROFILE)) {
             return HttpBody.createResponse(httpBody, Response.Status.BAD_REQUEST, MessageUtil.USER_NOT_ENOUGH_PRIVILEGE, null);
         }
 
@@ -103,7 +101,7 @@ public class UserService {
 
         User user = userDAO.getUserFromId(id);
 
-        if(user == null){
+        if(user == null) {
             return HttpBody.createResponse(httpBody, Response.Status.NOT_FOUND, MessageUtil.USER_NOT_FOUND, null);
         }
         httpBody.setStatus(Response.Status.OK);

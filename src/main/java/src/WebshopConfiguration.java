@@ -3,7 +3,6 @@ package src;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import io.dropwizard.db.DataSourceFactory;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.nio.charset.StandardCharsets;
@@ -36,5 +35,4 @@ public class WebshopConfiguration extends Configuration {
     public void setDatabase(DataSourceFactory database) {
         this.database = database;
     }
-
 }
